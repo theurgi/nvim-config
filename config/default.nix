@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   vim = {
     options = {
       autoindent = true;
@@ -24,6 +24,47 @@
       globalStatus = true;
       icons.enable = true;
       theme = "auto";
+    };
+
+    treesitter = {
+      enable = true;
+      fold = true;
+      highlight.enable = true;
+      incrementalSelection.enable = true;
+      indent.enable = true;
+
+      context = {
+        enable = true;
+        setupOpts = {
+          separator = "-";
+          max_lines = 3;
+        };
+      };
+
+      grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        lua
+        nix
+        bash
+        json
+        yaml
+        typescript
+      ];
+
+      textobjects = {
+        enable = true;
+        setupOpts = {
+          select = {
+            enable = true;
+            lookahead = true;
+            keymaps = {
+              "af" = "@function.outer";
+              "if" = "@function.inner";
+              "ac" = "@class.outer";
+              "ic" = "@class.inner";
+            };
+          };
+        };
+      };
     };
   };
 }

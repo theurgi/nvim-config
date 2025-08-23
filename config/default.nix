@@ -17,5 +17,13 @@
       updatetime = 250;
       wrap = false;
     };
+
+    statusline.lualine = {
+      enable = true;
+      disabledFiletypes = ["alpha"];
+      globalStatus = true;
+      icons.enable = true;
+      theme = "auto";
+    };
   };
 }

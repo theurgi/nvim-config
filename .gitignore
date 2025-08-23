@@ -1,0 +1,18 @@
+# Nix build artifacts
+result
+result-*
+
+# Direnv
+.envrc
+.direnv/
+
+# Editor/IDE files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# macOS/Linux
+.DS_Store
+Thumbs.db

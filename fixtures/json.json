@@ -1,0 +1,11 @@
+{
+	"name": "test-project",
+	"version": "1.0.0",
+	"dependencies": {
+		"typescript": "^5.0.0"
+	},
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Running tests\""
+	}
+}

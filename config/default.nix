@@ -1,5 +1,13 @@
 {pkgs, ...}: {
   vim = {
+    mini = {
+      ai.enable = true;
+      comment.enable = true;
+      icons.enable = true;
+      pairs.enable = true;
+      surround.enable = true;
+    };
+
     options = {
       autoindent = true;
       cursorlineopt = "both";

@@ -74,5 +74,16 @@
         };
       };
     };
+
+    utility = {
+      oil-nvim = {
+        enable = true;
+
+        setupOpts = {
+          default_file_explorer = true;
+          columns = ["icon"];
+        };
+      };
+    };
   };
 }

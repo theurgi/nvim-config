@@ -1,5 +1,67 @@
 {pkgs, ...}: {
   vim = {
+    extraPlugins = with pkgs.vimPlugins; {
+      opencode = {
+        package = opencode-nvim;
+
+        setup = ''
+          vim.g.opencode_opts = { auto_reload = true }
+          vim.opt.autoread = true
+        '';
+      };
+    };
+
+    keymaps = [
+      {
+        mode = "n";
+        key = "<leader>ot";
+        action = "<cmd>lua require('opencode').toggle()<CR>";
+        desc = "Toggle opencode";
+      }
+      {
+        mode = "n";
+        key = "<leader>oA";
+        action = "<cmd>lua require('opencode').ask()<CR>";
+        desc = "Ask opencode";
+      }
+      {
+        mode = "n";
+        key = "<leader>oa";
+        action = "<cmd>lua require('opencode').ask('@cursor: ')<CR>";
+        desc = "Ask opencode about cursor";
+      }
+      {
+        mode = "v";
+        key = "<leader>oa";
+        action = "<cmd>lua require('opencode').ask('@selection: ')<CR>";
+        desc = "Ask opencode about selection";
+      }
+      {
+        mode = ["n" "v"];
+        key = "<leader>os";
+        action = "<cmd>lua require('opencode').select()<CR>";
+        desc = "Select opencode prompt";
+      }
+      {
+        mode = "n";
+        key = "<leader>oe";
+        action = "<cmd>lua require('opencode').prompt('Explain @cursor and its context')<CR>";
+        desc = "Explain code at cursor";
+      }
+      {
+        mode = "n";
+        key = "<leader>on";
+        action = "<cmd>lua require('opencode').command('session_new')<CR>";
+        desc = "New opencode session";
+      }
+      {
+        mode = "n";
+        key = "<leader>oy";
+        action = "<cmd>lua require('opencode').command('messages_copy')<CR>";
+        desc = "Copy last opencode response";
+      }
+    ];
+
     mini = {
       ai.enable = true;
       comment.enable = true;
@@ -83,6 +145,11 @@
           default_file_explorer = true;
           columns = ["icon"];
         };
+      };
+
+      snacks-nvim = {
+        enable = true;
+        setupOpts.input.enable = true;
       };
     };
   };

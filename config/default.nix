@@ -1,5 +1,18 @@
 {pkgs, ...}: {
   vim = {
+    binds.whichKey = {
+      enable = true;
+
+      setupOpts = {
+        preset = "modern";
+        win.border = "rounded";
+      };
+
+      register = {
+        o = "+opencode";
+      };
+    };
+
     extraPlugins = with pkgs.vimPlugins; {
       opencode = {
         package = opencode-nvim;

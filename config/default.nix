@@ -114,6 +114,44 @@
       theme = "auto";
     };
 
+    telescope = {
+      enable = true;
+
+      setupOpts.defaults = {
+        initial_mode = "insert";
+        path_display = ["smart"];
+        layout_strategy = "horizontal";
+
+        layout_config = {
+          preview_cutoff = 120;
+          horizontal.preview_width = 0.55;
+        };
+
+        file_ignore_patterns = [
+          "node_modules"
+          "%.git/"
+          "dist/"
+          "build/"
+          "target/"
+          "result/"
+        ];
+      };
+
+      extensions = [
+        {
+          name = "fzf";
+          packages = [pkgs.vimPlugins.telescope-fzf-native-nvim];
+          setup = {
+            fzf = {
+              fuzzy = true;
+              override_generic_sorter = true;
+              override_file_sorter = true;
+            };
+          };
+        }
+      ];
+    };
+
     treesitter = {
       enable = true;
       fold = true;

@@ -78,6 +78,18 @@
         action = "<cmd>lua require('opencode').command('messages_copy')<CR>";
         desc = "Copy last opencode response";
       }
+      {
+        mode = "n";
+        key = "<leader>tt";
+        action = "<cmd>ToggleTerm<cr>";
+        desc = "Toggle floating terminal";
+      }
+      {
+        mode = "t";
+        key = "<esc>";
+        action = "<C-\\><C-n>";
+        desc = "Exit terminal mode";
+      }
     ];
 
     mini = {
@@ -150,6 +162,11 @@
           };
         }
       ];
+    };
+
+    terminal.toggleterm = {
+      enable = true;
+      setupOpts.direction = "float";
     };
 
     treesitter = {

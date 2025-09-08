@@ -31,4 +31,3 @@ environment.systemPackages = [
 ## Requirements
 
 - Nix with flakes enabled
-- Git (for installation from GitHub)

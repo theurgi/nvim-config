@@ -1,48 +1,52 @@
 {pkgs, ...}: {
   vim = {
-    autocomplete.nvim-cmp = {
-      enable = true;
+    autocomplete = {
+      nvim-cmp = {
+        enable = true;
 
-      sourcePlugins = [
-        "cmp-nvim-lsp"
-        "cmp-path"
-        "cmp-buffer"
-        "cmp-treesitter"
-        "luasnip"
-      ];
+        sourcePlugins = [
+          "cmp-nvim-lsp"
+          "cmp-path"
+          "cmp-buffer"
+          "cmp-treesitter"
+          "luasnip"
+        ];
 
-      sources = {
-        nvim-cmp = null;
-        path = "[Path]";
-        buffer = "[Buffer]";
-        nvim_lsp = "[LSP]";
-        treesitter = "[Treesitter]";
-        luasnip = "[LuaSnip]";
-      };
+        sources = {
+          nvim-cmp = null;
+          path = "[Path]";
+          buffer = "[Buffer]";
+          nvim_lsp = "[LSP]";
+          treesitter = "[Treesitter]";
+          luasnip = "[LuaSnip]";
+        };
 
-      setupOpts.completion.completeopt = "menu,menuone,noinsert,noselect";
+        setupOpts.completion.completeopt = "menu,menuone,noinsert,noselect";
 
-      mappings = {
-        confirm = "<CR>";
-        complete = "<C-Space>";
-        close = "<C-e>";
-        next = "<Tab>";
-        previous = "<S-Tab>";
-        scrollDocsUp = "<C-d>";
-        scrollDocsDown = "<C-f>";
+        mappings = {
+          confirm = "<CR>";
+          complete = "<C-Space>";
+          close = "<C-e>";
+          next = "<Tab>";
+          previous = "<S-Tab>";
+          scrollDocsUp = "<C-d>";
+          scrollDocsDown = "<C-f>";
+        };
       };
     };
 
-    binds.whichKey = {
-      enable = true;
+    binds = {
+      whichKey = {
+        enable = true;
 
-      setupOpts = {
-        preset = "modern";
-        win.border = "rounded";
-      };
+        setupOpts = {
+          preset = "modern";
+          win.border = "rounded";
+        };
 
-      register = {
-        o = "+opencode";
+        register = {
+          o = "+opencode";
+        };
       };
     };
 
@@ -156,14 +160,18 @@
       wrap = false;
     };
 
-    snippets.luasnip.enable = true;
+    snippets = {
+      luasnip.enable = true;
+    };
 
-    statusline.lualine = {
-      enable = true;
-      disabledFiletypes = ["alpha"];
-      globalStatus = true;
-      icons.enable = true;
-      theme = "auto";
+    statusline = {
+      lualine = {
+        enable = true;
+        disabledFiletypes = ["alpha"];
+        globalStatus = true;
+        icons.enable = true;
+        theme = "auto";
+      };
     };
 
     telescope = {
@@ -204,9 +212,11 @@
       ];
     };
 
-    terminal.toggleterm = {
-      enable = true;
-      setupOpts.direction = "float";
+    terminal = {
+      toggleterm = {
+        enable = true;
+        setupOpts.direction = "float";
+      };
     };
 
     treesitter = {

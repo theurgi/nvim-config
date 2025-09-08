@@ -1,5 +1,38 @@
 {pkgs, ...}: {
   vim = {
+    autocomplete.nvim-cmp = {
+      enable = true;
+
+      sourcePlugins = [
+        "cmp-nvim-lsp"
+        "cmp-path"
+        "cmp-buffer"
+        "cmp-treesitter"
+        "luasnip"
+      ];
+
+      sources = {
+        nvim-cmp = null;
+        path = "[Path]";
+        buffer = "[Buffer]";
+        nvim_lsp = "[LSP]";
+        treesitter = "[Treesitter]";
+        luasnip = "[LuaSnip]";
+      };
+
+      setupOpts.completion.completeopt = "menu,menuone,noinsert,noselect";
+
+      mappings = {
+        confirm = "<CR>";
+        complete = "<C-Space>";
+        close = "<C-e>";
+        next = "<Tab>";
+        previous = "<S-Tab>";
+        scrollDocsUp = "<C-d>";
+        scrollDocsDown = "<C-f>";
+      };
+    };
+
     binds.whichKey = {
       enable = true;
 
@@ -14,6 +47,11 @@
     };
 
     extraPlugins = with pkgs.vimPlugins; {
+      friendly-snippets = {
+        package = friendly-snippets;
+        setup = "require('luasnip.loaders.from_vscode').lazy_load()";
+      };
+
       opencode = {
         package = opencode-nvim;
 
@@ -117,6 +155,8 @@
       updatetime = 250;
       wrap = false;
     };
+
+    snippets.luasnip.enable = true;
 
     statusline.lualine = {
       enable = true;

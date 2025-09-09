@@ -50,6 +50,24 @@
       };
     };
 
+    diagnostics = {
+      nvim-lint = {
+        enable = true;
+        lint_after_save = true;
+
+        lint_function = pkgs.lib.mkLuaInline ''
+          function(buf)
+            require("lint").try_lint()
+          end
+        '';
+
+        linters_by_ft = {
+          typescript = ["eslint"];
+          javascript = ["eslint"];
+        };
+      };
+    };
+
     extraPlugins = with pkgs.vimPlugins; {
       friendly-snippets = {
         package = friendly-snippets;

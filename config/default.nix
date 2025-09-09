@@ -84,6 +84,24 @@
       };
     };
 
+    formatter = {
+      conform-nvim = {
+        enable = true;
+
+        setupOpts.formatters_by_ft = {
+          javascript = ["prettier" "dprint"];
+          typescript = ["prettier" "dprint"];
+          javascriptreact = ["prettier" "dprint"];
+          typescriptreact = ["prettier" "dprint"];
+          markdown = ["prettier"];
+          nix = ["alejandra"];
+          sh = ["shfmt"];
+          bash = ["shfmt"];
+          zsh = ["shfmt"];
+        };
+      };
+    };
+
     git = {
       gitsigns.enable = true;
       vim-fugitive.enable = true;

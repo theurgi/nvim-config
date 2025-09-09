@@ -178,6 +178,42 @@
       }
     ];
 
+    lsp = {
+      formatOnSave = true;
+
+      servers = {
+        bash-language-server = {
+          enable = true;
+          filetypes = ["sh" "bash"];
+          cmd = ["bash-language-server" "start"];
+        };
+
+        lua-language-server = {
+          enable = true;
+          filetypes = ["lua"];
+          cmd = ["lua-language-server"];
+        };
+
+        marksman = {
+          enable = true;
+          filetypes = ["markdown"];
+          cmd = ["marksman" "server"];
+        };
+
+        nil = {
+          enable = true;
+          filetypes = ["nix"];
+          cmd = ["nil"];
+        };
+
+        typescript-language-server = {
+          enable = true;
+          filetypes = ["typescript" "javascript" "typescriptreact" "javascriptreact"];
+          cmd = ["typescript-language-server" "--stdio"];
+        };
+      };
+    };
+
     mini = {
       ai.enable = true;
       comment.enable = true;

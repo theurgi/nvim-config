@@ -10,7 +10,7 @@ A minimal, portable Neovim configuration built with [nvf](https://github.com/not
 # Test without installing
 nix run github:theurgi/nvim-config
 
-# Install Neovim config
+# Install Neovim config (includes all LSP servers and tools)
 nix profile install github:theurgi/nvim-config
 ```
 
@@ -28,24 +28,34 @@ environment.systemPackages = [
 ];
 ```
 
-## Formatters
+## Development Tools
 
-This configuration integrates [conform.nvim](https://github.com/stevearc/conform.nvim) for auto and manual code formatting.
-
-To install the required formatting tools, use the bundled package:
+### All-in-One
 
 ```bash
-# Install formatters into your profile
-nix profile install github:theurgi/nvim-config#conform-formatters
+# Install everything (LSP servers, formatters, linters)
+nix profile install github:theurgi/nvim-config#dev-tools
 ```
 
-This package includes:
+### Selective Installation
 
-- [`prettier`](https://prettier.io/) – JavaScript, TypeScript, Markdown
-- [`alejandra`](https://github.com/kamadorueda/alejandra) – Nix files
-- [`shfmt`](https://github.com/mvdan/sh) – POSIX/Bash/Zsh shell scripts
+```bash
+# Install only LSP servers
+nix profile install github:theurgi/nvim-config#lsp-servers
 
-Conform.nvim will automatically pick up these formatters when available in `$PATH`.
+# Install only formatters
+nix profile install github:theurgi/nvim-config#formatters
+
+# Install only linters
+nix profile install github:theurgi/nvim-config#linters
+```
+
+### Development Shell
+
+```bash
+# Enter a development shell with nvim + all tools
+nix develop github:theurgi/nvim-config
+```
 
 ## Requirements
 

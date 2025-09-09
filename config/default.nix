@@ -88,16 +88,24 @@
       conform-nvim = {
         enable = true;
 
-        setupOpts.formatters_by_ft = {
-          javascript = ["prettier"];
-          typescript = ["prettier"];
-          javascriptreact = ["prettier"];
-          typescriptreact = ["prettier"];
-          markdown = ["prettier"];
-          nix = ["alejandra"];
-          sh = ["shfmt"];
-          bash = ["shfmt"];
-          zsh = ["shfmt"];
+        setupOpts = {
+          formatters_by_ft = {
+            javascript = ["prettier"];
+            typescript = ["prettier"];
+            javascriptreact = ["prettier"];
+            typescriptreact = ["prettier"];
+            markdown = ["prettier"];
+            nix = ["alejandra"];
+            sh = ["shfmt"];
+            bash = ["shfmt"];
+            zsh = ["shfmt"];
+          };
+
+          format_on_save = pkgs.lib.mkLuaInline ''
+            function(buf)
+              require("conform").format()
+            end
+          '';
         };
       };
     };

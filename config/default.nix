@@ -50,6 +50,10 @@
       };
     };
 
+    dashboard = {
+      alpha.enable = true;
+    };
+
     diagnostics = {
       nvim-lint = {
         enable = true;

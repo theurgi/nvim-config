@@ -176,6 +176,12 @@
         action = "<C-\\><C-n>";
         desc = "Exit terminal mode";
       }
+      {
+        mode = "n";
+        key = "<leader>e";
+        action = "<cmd>Oil<cr>";
+        desc = "Open Oil file manager";
+      }
     ];
 
     lsp = {

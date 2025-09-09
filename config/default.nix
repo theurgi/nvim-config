@@ -89,10 +89,10 @@
         enable = true;
 
         setupOpts.formatters_by_ft = {
-          javascript = ["prettier" "dprint"];
-          typescript = ["prettier" "dprint"];
-          javascriptreact = ["prettier" "dprint"];
-          typescriptreact = ["prettier" "dprint"];
+          javascript = ["prettier"];
+          typescript = ["prettier"];
+          javascriptreact = ["prettier"];
+          typescriptreact = ["prettier"];
           markdown = ["prettier"];
           nix = ["alejandra"];
           sh = ["shfmt"];

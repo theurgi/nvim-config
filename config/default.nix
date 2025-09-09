@@ -346,6 +346,13 @@
       };
     };
 
+    undoFile = {
+      enable = true;
+      path = pkgs.lib.mkLuaInline ''
+        os.getenv('XDG_DATA_HOME') .. '/nvim/undo'
+      '';
+    };
+
     utility = {
       oil-nvim = {
         enable = true;

@@ -309,6 +309,11 @@
       };
     };
 
+    theme = {
+      enable = true;
+      name = "nord";
+    };
+
     treesitter = {
       enable = true;
       fold = true;

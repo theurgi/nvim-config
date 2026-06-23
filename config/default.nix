@@ -240,15 +240,31 @@
     # a SIGUSR1 handler on require, so Noctalia's post_hook (`pkill -SIGUSR1 nvim`) live-
     # reloads the palette. Requires ~/.config/nvim on rtp (see additionalRuntimePaths).
     luaConfigPost = ''
+      -- Transparency: clear the editor-area backgrounds so the terminal shows through —
+      -- under ghostty (background-opacity 0.9) + Hyprland blur, nvim then inherits both.
+      -- `highlight … guibg=NONE` only touches bg (keeps fg/attrs). Must re-run after every
+      -- colorscheme apply, since each repaints Normal et al. with a solid bg. Floats/popups
+      -- (Pmenu, NormalFloat, Telescope) deliberately stay opaque → readable over the blur.
+      local function clearBg()
+        for _, g in ipairs({
+          "Normal", "NormalNC", "SignColumn", "EndOfBuffer",
+          "LineNr", "CursorLineNr", "FoldColumn", "MsgArea", "NonText",
+        }) do
+          pcall(vim.cmd, "highlight " .. g .. " guibg=NONE ctermbg=NONE")
+        end
+      end
+      clearBg() -- the static fallback (nord) path, when no palette is rendered
+
       local ok, m = pcall(require, "matugen")
       if ok and m and m.setup then
         m.setup()
+        clearBg()
         -- lualine doesn't follow base16 on its own: theme "auto" latches the startup
         -- colorscheme (nord), and base16-colorscheme.setup() fires no ColorScheme event to
         -- shake it loose. So when Noctalia is theming us, drive lualine from its own
         -- "base16" theme (which reads the live base16 palette) and re-run setup on every
         -- Noctalia live-reload — our SIGUSR1 handler is registered AFTER matugen's own (on
-        -- require, above) so the palette is refreshed first, then lualine re-reads it.
+        -- require, above) so the palette is refreshed first, then we re-read it.
         local function syncLualine()
           pcall(function()
             require("lualine").setup({options = {theme = "base16"}})
@@ -257,7 +273,10 @@
         syncLualine()
         -- Keep a ref so the active signal handle isn't garbage-collected.
         _G.__noctalia_lualine_signal = vim.uv.new_signal()
-        _G.__noctalia_lualine_signal:start("sigusr1", vim.schedule_wrap(syncLualine))
+        _G.__noctalia_lualine_signal:start("sigusr1", vim.schedule_wrap(function()
+          clearBg()
+          syncLualine()
+        end))
       end
     '';
 

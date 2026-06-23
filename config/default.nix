@@ -1,5 +1,11 @@
 {pkgs, ...}: {
   vim = {
+    # Re-add ~/.config/nvim to the runtimepath: nvf's mnw wrapper isolates rtp, so the
+    # Noctalia-rendered lua/matugen.lua is otherwise unreachable. Needed both for the
+    # startup require below AND matugen.lua's own SIGUSR1 self-reload (it require()s
+    # 'matugen'). Impure absolute path — see luaConfigPost / theme.name notes below.
+    additionalRuntimePaths = ["$HOME/.config/nvim"];
+
     autocomplete = {
       nvim-cmp = {
         enable = true;
@@ -73,6 +79,10 @@
     };
 
     extraPlugins = with pkgs.vimPlugins; {
+      # Provides the `base16-colorscheme` module that Noctalia's matugen.lua calls; the
+      # palette is applied by the luaConfigPost bootstrap, not here.
+      base16-nvim.package = base16-nvim;
+
       friendly-snippets = {
         package = friendly-snippets;
         setup = "require('luasnip.loaders.from_vscode').lazy_load()";
@@ -224,6 +234,16 @@
       };
     };
 
+    # Apply the Noctalia palette over the static fallback theme, if present. Guarded so
+    # `nix run github:theurgi/nvim-config` on any machine (no matugen.lua) just keeps nord.
+    # Runs after plugins load → base16-colorscheme is available. matugen.lua self-registers
+    # a SIGUSR1 handler on require, so Noctalia's post_hook (`pkill -SIGUSR1 nvim`) live-
+    # reloads the palette. Requires ~/.config/nvim on rtp (see additionalRuntimePaths).
+    luaConfigPost = ''
+      local ok, m = pcall(require, "matugen")
+      if ok and m and m.setup then m.setup() end
+    '';
+
     mini = {
       ai.enable = true;
       comment.enable = true;
@@ -309,6 +329,8 @@
       };
     };
 
+    # Fallback colorscheme: shown standalone (`nix run`) or before Noctalia has rendered a
+    # palette. The luaConfigPost matugen bootstrap overrides it whenever matugen.lua exists.
     theme = {
       enable = true;
       name = "nord";

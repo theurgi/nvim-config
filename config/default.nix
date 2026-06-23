@@ -241,7 +241,24 @@
     # reloads the palette. Requires ~/.config/nvim on rtp (see additionalRuntimePaths).
     luaConfigPost = ''
       local ok, m = pcall(require, "matugen")
-      if ok and m and m.setup then m.setup() end
+      if ok and m and m.setup then
+        m.setup()
+        -- lualine doesn't follow base16 on its own: theme "auto" latches the startup
+        -- colorscheme (nord), and base16-colorscheme.setup() fires no ColorScheme event to
+        -- shake it loose. So when Noctalia is theming us, drive lualine from its own
+        -- "base16" theme (which reads the live base16 palette) and re-run setup on every
+        -- Noctalia live-reload — our SIGUSR1 handler is registered AFTER matugen's own (on
+        -- require, above) so the palette is refreshed first, then lualine re-reads it.
+        local function syncLualine()
+          pcall(function()
+            require("lualine").setup({options = {theme = "base16"}})
+          end)
+        end
+        syncLualine()
+        -- Keep a ref so the active signal handle isn't garbage-collected.
+        _G.__noctalia_lualine_signal = vim.uv.new_signal()
+        _G.__noctalia_lualine_signal:start("sigusr1", vim.schedule_wrap(syncLualine))
+      end
     '';
 
     mini = {

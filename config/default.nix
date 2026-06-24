@@ -257,25 +257,25 @@
 
       local ok, m = pcall(require, "matugen")
       if ok and m and m.setup then
-        m.setup()
-        clearBg()
-        -- lualine doesn't follow base16 on its own: theme "auto" latches the startup
-        -- colorscheme (nord), and base16-colorscheme.setup() fires no ColorScheme event to
-        -- shake it loose. So when Noctalia is theming us, drive lualine from its own
-        -- "base16" theme (which reads the live base16 palette) and re-run setup on every
-        -- Noctalia live-reload — our SIGUSR1 handler is registered AFTER matugen's own (on
-        -- require, above) so the palette is refreshed first, then we re-read it.
-        local function syncLualine()
-          pcall(function()
-            require("lualine").setup({options = {theme = "base16"}})
-          end)
-        end
-        syncLualine()
-        -- Keep a ref so the active signal handle isn't garbage-collected.
-        _G.__noctalia_lualine_signal = vim.uv.new_signal()
-        _G.__noctalia_lualine_signal:start("sigusr1", vim.schedule_wrap(function()
+        -- Re-assert our look after matugen paints the palette: clear backgrounds again,
+        -- and drive lualine from its own "base16" theme (it won't follow base16 on its
+        -- own — theme "auto" latches the startup colorscheme and base16-colorscheme.setup()
+        -- fires no ColorScheme event).
+        local function apply()
           clearBg()
-          syncLualine()
+          pcall(function() require("lualine").setup({options = {theme = "base16"}}) end)
+        end
+        m.setup()
+        apply()
+
+        -- Live-reload: Noctalia sends SIGUSR1 and matugen's own handler (registered on the
+        -- require above) repaints. libuv signal-handler order is UNSPECIFIED, so we defer
+        -- our apply one extra tick (schedule-inside-schedule) to land AFTER matugen's
+        -- repaint — otherwise its solid Normal clobbers our transparency. Ref kept so the
+        -- active signal handle isn't garbage-collected.
+        _G.__noctalia_nvim_signal = vim.uv.new_signal()
+        _G.__noctalia_nvim_signal:start("sigusr1", vim.schedule_wrap(function()
+          vim.schedule(apply)
         end))
       end
     '';

@@ -1,10 +1,11 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   vim = {
     # Re-add ~/.config/nvim to the runtimepath: nvf's mnw wrapper isolates rtp, so the
     # Noctalia-rendered lua/matugen.lua is otherwise unreachable. Needed both for the
     # startup require below AND matugen.lua's own SIGUSR1 self-reload (it require()s
     # 'matugen'). Impure absolute path — see luaConfigPost / theme.name notes below.
-    additionalRuntimePaths = ["$HOME/.config/nvim"];
+    additionalRuntimePaths = [ "$HOME/.config/nvim" ];
 
     autocomplete = {
       nvim-cmp = {
@@ -49,10 +50,6 @@
           preset = "modern";
           win.border = "rounded";
         };
-
-        register = {
-          o = "+opencode";
-        };
       };
     };
 
@@ -72,8 +69,8 @@
         '';
 
         linters_by_ft = {
-          typescript = ["eslint"];
-          javascript = ["eslint"];
+          typescript = [ "eslint" ];
+          javascript = [ "eslint" ];
         };
       };
     };
@@ -87,15 +84,6 @@
         package = friendly-snippets;
         setup = "require('luasnip.loaders.from_vscode').lazy_load()";
       };
-
-      opencode = {
-        package = opencode-nvim;
-
-        setup = ''
-          vim.g.opencode_opts = { auto_reload = true }
-          vim.opt.autoread = true
-        '';
-      };
     };
 
     formatter = {
@@ -104,15 +92,15 @@
 
         setupOpts = {
           formatters_by_ft = {
-            javascript = ["prettier"];
-            typescript = ["prettier"];
-            javascriptreact = ["prettier"];
-            typescriptreact = ["prettier"];
-            markdown = ["prettier"];
-            nix = ["alejandra"];
-            sh = ["shfmt"];
-            bash = ["shfmt"];
-            zsh = ["shfmt"];
+            javascript = [ "prettier" ];
+            typescript = [ "prettier" ];
+            javascriptreact = [ "prettier" ];
+            typescriptreact = [ "prettier" ];
+            markdown = [ "prettier" ];
+            nix = [ "nixfmt" ];
+            sh = [ "shfmt" ];
+            bash = [ "shfmt" ];
+            zsh = [ "shfmt" ];
           };
 
           format_on_save = pkgs.lib.mkLuaInline ''
@@ -130,54 +118,6 @@
     };
 
     keymaps = [
-      {
-        mode = "n";
-        key = "<leader>ot";
-        action = "<cmd>lua require('opencode').toggle()<CR>";
-        desc = "Toggle opencode";
-      }
-      {
-        mode = "n";
-        key = "<leader>oA";
-        action = "<cmd>lua require('opencode').ask()<CR>";
-        desc = "Ask opencode";
-      }
-      {
-        mode = "n";
-        key = "<leader>oa";
-        action = "<cmd>lua require('opencode').ask('@cursor: ')<CR>";
-        desc = "Ask opencode about cursor";
-      }
-      {
-        mode = "v";
-        key = "<leader>oa";
-        action = "<cmd>lua require('opencode').ask('@selection: ')<CR>";
-        desc = "Ask opencode about selection";
-      }
-      {
-        mode = ["n" "v"];
-        key = "<leader>os";
-        action = "<cmd>lua require('opencode').select()<CR>";
-        desc = "Select opencode prompt";
-      }
-      {
-        mode = "n";
-        key = "<leader>oe";
-        action = "<cmd>lua require('opencode').prompt('Explain @cursor and its context')<CR>";
-        desc = "Explain code at cursor";
-      }
-      {
-        mode = "n";
-        key = "<leader>on";
-        action = "<cmd>lua require('opencode').command('session_new')<CR>";
-        desc = "New opencode session";
-      }
-      {
-        mode = "n";
-        key = "<leader>oy";
-        action = "<cmd>lua require('opencode').command('messages_copy')<CR>";
-        desc = "Copy last opencode response";
-      }
       {
         mode = "n";
         key = "<leader>tt";
@@ -204,32 +144,49 @@
       servers = {
         bash-language-server = {
           enable = true;
-          filetypes = ["sh" "bash"];
-          cmd = ["bash-language-server" "start"];
+          filetypes = [
+            "sh"
+            "bash"
+          ];
+          cmd = [
+            "bash-language-server"
+            "start"
+          ];
         };
 
         lua-language-server = {
           enable = true;
-          filetypes = ["lua"];
-          cmd = ["lua-language-server"];
+          filetypes = [ "lua" ];
+          cmd = [ "lua-language-server" ];
         };
 
         marksman = {
           enable = true;
-          filetypes = ["markdown"];
-          cmd = ["marksman" "server"];
+          filetypes = [ "markdown" ];
+          cmd = [
+            "marksman"
+            "server"
+          ];
         };
 
         nil = {
           enable = true;
-          filetypes = ["nix"];
-          cmd = ["nil"];
+          filetypes = [ "nix" ];
+          cmd = [ "nil" ];
         };
 
         typescript-language-server = {
           enable = true;
-          filetypes = ["typescript" "javascript" "typescriptreact" "javascriptreact"];
-          cmd = ["typescript-language-server" "--stdio"];
+          filetypes = [
+            "typescript"
+            "javascript"
+            "typescriptreact"
+            "javascriptreact"
+          ];
+          cmd = [
+            "typescript-language-server"
+            "--stdio"
+          ];
         };
       };
     };
@@ -313,7 +270,7 @@
     statusline = {
       lualine = {
         enable = true;
-        disabledFiletypes = ["alpha"];
+        disabledFiletypes = [ "alpha" ];
         globalStatus = true;
         icons.enable = true;
         theme = "auto";
@@ -325,7 +282,7 @@
 
       setupOpts.defaults = {
         initial_mode = "insert";
-        path_display = ["smart"];
+        path_display = [ "smart" ];
         layout_strategy = "horizontal";
 
         layout_config = {
@@ -346,7 +303,7 @@
       extensions = [
         {
           name = "fzf";
-          packages = [pkgs.vimPlugins.telescope-fzf-native-nvim];
+          packages = [ pkgs.vimPlugins.telescope-fzf-native-nvim ];
           setup = {
             fzf = {
               fuzzy = true;
@@ -426,7 +383,7 @@
 
         setupOpts = {
           default_file_explorer = true;
-          columns = ["icon"];
+          columns = [ "icon" ];
         };
       };
 

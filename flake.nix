@@ -16,7 +16,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
 
       formatters = with pkgs; [
-        alejandra
+        nixfmt
         prettier
         shfmt
       ];
